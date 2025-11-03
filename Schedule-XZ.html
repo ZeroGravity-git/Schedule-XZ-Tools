@@ -1,0 +1,1220 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Schedule-XZ</title>
+    <style>
+        :root {
+            --primary: #2c3e50;
+            --secondary: #3498db;
+            --accent: #e74c3c;
+            --light: #ecf0f1;
+            --dark: #2c3e50;
+            --success: #2ecc71;
+            --warning: #f39c12;
+            --danger: #e74c3c;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #1a2a3a, #2c3e50);
+            color: var(--light);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* Login Form Styles */
+        #login-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 80vh;
+        }
+
+        .login-form {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+        }
+
+        .login-logo {
+            font-family: monospace;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            color: var(--secondary);
+            text-shadow: 0 0 10px rgba(52, 152, 219, 0.5);
+        }
+
+        .login-tagline {
+            font-size: 1.2rem;
+            color: var(--light);
+            opacity: 0.8;
+            margin-bottom: 30px;
+        }
+
+        .login-input {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 5px;
+            background: rgba(0, 0, 0, 0.3);
+            color: var(--light);
+            font-size: 1rem;
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 12px;
+            background: var(--secondary);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .login-btn:hover {
+            background: #2980b9;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .login-error {
+            color: var(--danger);
+            margin-top: 10px;
+            display: none;
+        }
+
+        /* Main App Styles */
+        #main-app {
+            display: none;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .logo {
+            font-family: monospace;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            color: var(--secondary);
+            text-shadow: 0 0 10px rgba(52, 152, 219, 0.5);
+        }
+
+        .tagline {
+            font-size: 1.2rem;
+            color: var(--light);
+            opacity: 0.8;
+        }
+
+        .nav-tabs {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 30px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            padding: 10px;
+        }
+
+        .tab-btn {
+            padding: 12px 25px;
+            margin: 5px;
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            border-radius: 5px;
+            color: var(--light);
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .tab-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .tab-btn.active {
+            background: var(--secondary);
+            color: white;
+        }
+
+        .tab-content {
+            display: none;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        h2 {
+            color: var(--secondary);
+            margin-bottom: 20px;
+            border-bottom: 2px solid var(--secondary);
+            padding-bottom: 10px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        input, textarea, select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 5px;
+            background: rgba(0, 0, 0, 0.3);
+            color: var(--light);
+            font-size: 1rem;
+        }
+
+        textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .btn {
+            padding: 12px 25px;
+            background: var(--secondary);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .btn:hover {
+            background: #2980b9;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn-danger {
+            background: var(--danger);
+        }
+
+        .btn-danger:hover {
+            background: #c0392b;
+        }
+
+        .btn-success {
+            background: var(--success);
+        }
+
+        .btn-success:hover {
+            background: #27ae60;
+        }
+
+        .schedule-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .schedule-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .schedule-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .schedule-card h3 {
+            color: var(--secondary);
+            margin-bottom: 10px;
+        }
+
+        .schedule-card p {
+            margin-bottom: 10px;
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        .schedule-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .schedule-preview {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 20px;
+            white-space: pre-line;
+            font-family: monospace;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .credits {
+            text-align: center;
+            margin-top: 40px;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+        }
+
+        .credits h3 {
+            color: var(--secondary);
+            margin-bottom: 10px;
+        }
+
+        .input-group {
+            margin-bottom: 15px;
+            padding: 15px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 5px;
+        }
+
+        .input-group h4 {
+            margin-bottom: 10px;
+            color: var(--secondary);
+        }
+
+        .day-selector {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .day-option {
+            padding: 10px 15px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .day-option.active {
+            background: var(--secondary);
+            color: white;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .alert {
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            background: var(--success);
+            color: white;
+        }
+
+        .alert-error {
+            background: var(--danger);
+        }
+
+        .logout-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: var(--danger);
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 768px) {
+            .nav-tabs {
+                flex-direction: column;
+            }
+            
+            .tab-btn {
+                width: 100%;
+                margin: 5px 0;
+            }
+            
+            .schedule-list {
+                grid-template-columns: 1fr;
+            }
+            
+            .logout-btn {
+                position: relative;
+                top: 0;
+                right: 0;
+                margin-bottom: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Login Form -->
+    <div id="login-container">
+        <div class="login-form">
+            <div class="login-logo">Schedule-XZ</div>
+            <div class="login-tagline">Management System</div>
+            
+            <input type="text" id="username" class="login-input" placeholder="Username">
+            <input type="password" id="password" class="login-input" placeholder="Password">
+            <button id="login-btn" class="login-btn">Login</button>
+            <div id="login-error" class="login-error">Username atau password salah!</div>
+            
+            <div class="credits" style="margin-top: 30px;">
+                <h3>CREDITS</h3>
+                <p>Coded BY : ¿ZeroGravity?</p>
+                <p>Powered BY : HyperXZ Company</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Application -->
+    <div id="main-app" class="container">
+        <button id="logout-btn" class="logout-btn">Logout</button>
+        
+        <header>
+            <div class="logo">Schedule-XZ</div>
+            <div class="tagline">Management System</div>
+        </header>
+
+        <div class="nav-tabs">
+            <button class="tab-btn active" data-tab="create-schedule">Create New Schedule</button>
+            <button class="tab-btn" data-tab="schedule-list">Schedule</button>
+            <button class="tab-btn" data-tab="template">Create New Template</button>
+            <button class="tab-btn" data-tab="settings">Settings</button>
+            <button class="tab-btn" data-tab="about">About & Help</button>
+        </div>
+
+        <!-- Create New Schedule Tab -->
+        <div id="create-schedule" class="tab-content active">
+            <h2>Create New Schedule</h2>
+            
+            <div class="form-group">
+                <label>Hari</label>
+                <div class="day-selector">
+                    <div class="day-option active" data-day="Senin">Senin</div>
+                    <div class="day-option" data-day="Selasa">Selasa</div>
+                    <div class="day-option" data-day="Rabu">Rabu</div>
+                    <div class="day-option" data-day="Kamis">Kamis</div>
+                    <div class="day-option" data-day="Jumat">Jumat</div>
+                    <div class="day-option" data-day="Sabtu">Sabtu</div>
+                </div>
+            </div>
+
+            <div class="input-group">
+                <h4>Pekerjaan Rumah (PR)</h4>
+                <div id="pr-inputs">
+                    <div class="pr-input">
+                        <input type="text" placeholder="Nama Pelajaran Pekerjaan Rumah" class="pr-pelajaran">
+                        <input type="text" placeholder="Tugas" class="pr-tugas">
+                        <input type="text" placeholder="DeadLine (DD/MM/YYYY)" class="pr-deadline">
+                        <input type="text" placeholder="Catatan" class="pr-catatan">
+                    </div>
+                </div>
+                <button class="btn" id="add-pr">Tambah PR</button>
+            </div>
+
+            <div class="input-group">
+                <h4>Pengumuman</h4>
+                <div id="announcement-inputs">
+                    <div class="announcement-input">
+                        <input type="text" placeholder="Pengumuman" class="announcement-text">
+                        <input type="text" placeholder="Catatan" class="announcement-catatan">
+                        <input type="text" placeholder="Tanggal (DD/MM/YY)" class="announcement-tanggal">
+                    </div>
+                </div>
+                <button class="btn" id="add-announcement">Tambah Pengumuman</button>
+            </div>
+
+            <div class="input-group">
+                <h4>Peringatan</h4>
+                <div id="warning-inputs">
+                    <div class="warning-input">
+                        <input type="text" placeholder="Tingkat Peringatan" class="warning-tingkat">
+                        <input type="text" placeholder="Nama Penerima Peringatan" class="warning-penerima">
+                        <input type="text" placeholder="Catatan Peringatan" class="warning-catatan">
+                        <input type="text" placeholder="Hukuman yang didapatkan" class="warning-hukuman">
+                    </div>
+                </div>
+                <button class="btn" id="add-warning">Tambah Peringatan</button>
+            </div>
+
+            <button class="btn btn-success" id="generate-schedule">Generate Schedule</button>
+            
+            <div class="schedule-preview" id="schedule-preview">
+                Schedule preview akan muncul di sini...
+            </div>
+            
+            <button class="btn" id="copy-schedule">Copy to Clipboard</button>
+            <button class="btn btn-success" id="save-schedule">Save Schedule</button>
+        </div>
+
+        <!-- Schedule List Tab -->
+        <div id="schedule-list" class="tab-content">
+            <h2>Schedule Management</h2>
+            <p>Daftar jadwal yang telah dibuat:</p>
+            
+            <div class="schedule-list" id="saved-schedules">
+                <!-- Saved schedules will appear here -->
+            </div>
+        </div>
+
+        <!-- Template Tab -->
+        <div id="template" class="tab-content">
+            <h2>Create New Template Schedule</h2>
+            <p>Template default sudah tersedia untuk semua hari:</p>
+            <ul>
+                <li>Senin</li>
+                <li>Selasa</li>
+                <li>Rabu</li>
+                <li>Kamis</li>
+                <li>Jumat</li>
+                <li>Sabtu</li>
+            </ul>
+            <p>Template akan secara otomatis menggunakan format yang telah ditentukan.</p>
+        </div>
+
+        <!-- Settings Tab -->
+        <div id="settings" class="tab-content">
+            <h2>Settings</h2>
+            <div class="form-group">
+                <h3>Informasi Sistem</h3>
+                <p>Jumlah Jadwal: <span id="schedule-count">0</span></p>
+                <p>Jumlah Template: <span id="template-count">0</span></p>
+            </div>
+            
+            <div class="form-group">
+                <h3>Opsi</h3>
+                <button class="btn btn-danger" id="delete-all">Hapus Semua Data</button>
+            </div>
+        </div>
+
+        <!-- About & Help Tab -->
+        <div id="about" class="tab-content">
+            <h2>About & Help</h2>
+            <div class="form-group">
+                <h3>Schedule-XZ</h3>
+                <p>Schedule-XZ adalah tools untuk membuat jadwal sekolah otomatis dengan fitur-fitur lengkap.</p>
+                
+                <h4>FITUR UTAMA:</h4>
+                <ul>
+                    <li>Create New Schedule - Membuat jadwal baru otomatis</li>
+                    <li>Schedule Management - Mengelola jadwal yang telah dibuat</li>
+                    <li>Template System - Template jadwal yang sudah tersedia</li>
+                    <li>Custom Input - Input data PR, Pengumuman, dan Peringatan</li>
+                    <li>Auto Copy - Menyalin jadwal ke clipboard</li>
+                </ul>
+                
+                <h4>CARA PENGGUNAAN:</h4>
+                <ol>
+                    <li>Pilih 'Create New Schedule' untuk membuat jadwal baru</li>
+                    <li>Isi data PR, Pengumuman, dan Peringatan jika diperlukan</li>
+                    <li>Jadwal akan otomatis dibuat untuk hari berikutnya</li>
+                    <li>Gunakan 'Schedule' untuk melihat atau menghapus jadwal</li>
+                </ol>
+                
+                <h4>KEUNGGULAN:</h4>
+                <ul>
+                    <li>Otomatis menyesuaikan hari (real-time + 1)</li>
+                    <li>Format jadwal yang rapi dan informatif</li>
+                    <li>Mudah digunakan dan di-customize</li>
+                    <li>Support copy to clipboard</li>
+                </ul>
+            </div>
+            
+            <div class="credits">
+                <h3>CREDITS</h3>
+                <p>Coded BY : ¿ZeroGravity?</p>
+                <p>Powered BY : HyperXZ Company</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Data jadwal pelajaran untuk setiap hari
+        const scheduleData = {
+            "Senin": {
+                "pelajaran": [
+                    "•Bahasa Indonesia - Ibu Sakinah Putri Hilda s.Pd (3 Jam)",
+                    "•Pelajaran Agama Islam & Budi Pekerti - Bapak Lili Tabrani s.Pd (2 Jam)",
+                    "•BTQ - Bapak Lili Tabrani s.Pd (2 Jam)"
+                ],
+                "seragam": [
+                    "•Baju Biru-Putih",
+                    "•Atribut Lengkap Baju Biru-Putih"
+                ],
+                "piket": [
+                    "•Zahra", "•Ahmad", "•Talita", "•Gading", "•Sintia", "•Kenzo"
+                ]
+            },
+            "Selasa": {
+                "pelajaran": [
+                    "•Ilmu Pengetahuan Alam - Ibu Ummu Afifah s.Pd (3 Jam)",
+                    "•Matematika - Ibu Mairiskawati s.Pd (2 Jam)",
+                    "•Bahasa Indonesia - Ibu Sakinah Putri Hilda s.Pd (2 Jam)"
+                ],
+                "seragam": [
+                    "•Baju Pramuka",
+                    "•Atribut Lengkap Baju Pramuka"
+                ],
+                "piket": [
+                    "•Akbar", "•Satrio", "•Fatih", "•Listyana", "•Alfa", "•Alfi"
+                ]
+            },
+            "Rabu": {
+                "pelajaran": [
+                    "•Ilmu Pengetahuan Alam - Ibu Ummu Afifah s.Pd (1 Jam)",
+                    "•Bahasa Inggris - Ibu Suhaeti s.Pd (2 Jam)",
+                    "•Informatika - Bapak Jauhari s.Kom (2 Jam)",
+                    "•Matematika - Ibu Mairiskawati s.Pd (2 Jam)"
+                ],
+                "seragam": [
+                    "•Baju Putih-Biru",
+                    "•Atribut Lengkap Putih-Biru",
+                    "•Baju Batik Hari Rabu"
+                ],
+                "piket": [
+                    "•Almira", "•Ralin", "•Andika", "•Rakha", "•Aqhilla", "•Latisya"
+                ]
+            },
+            "Kamis": {
+                "pelajaran": [
+                    "•Ilmu Pengetahuan Sosial - Bapak Junaedi s.Pd (3 Jam)",
+                    "•Bahasa Sunda - Ibu Rachma Yulianti s.Pd (1 Jam)",
+                    "•Bahasa Inggris - Ibu Suhaeti s.Pd (1 Jam)",
+                    "•PJOK - Ibu Irmaya Zuningsih s.Pd (2 Jam)"
+                ],
+                "seragam": [
+                    "•Baju Pramuka",
+                    "•Atribut Lengkap Baju Pramuka",
+                    "•Baju Batik Hari Kamis",
+                    "•Baju Olahraga"
+                ],
+                "piket": [
+                    "•Arya", "•Nohsya", "•Nasywah", "•Bagas", "•Desta", "•Alfan"
+                ]
+            },
+            "Jumat": {
+                "pelajaran": [
+                    "•Pendidikan Pancasila - Ibu Fitria Ning Utami s.Pd (2 Jam)",
+                    "•Seni Rupa & Prakarya - Ibu Sakinah Putri Hilda s.Pd (1 Jam)"
+                ],
+                "seragam": [
+                    "•Baju Muslim"
+                ],
+                "piket": [
+                    "•Dinda", "•Alya", "•Ghani", "•Naira", "•Ilmi", "•Dhika"
+                ],
+                "khusus": [
+                    "*Sholat Jum'at:*",
+                    "",
+                    "•Kalian harus Sholat Jum'at terutama bagi yang Pria , Kalian dapat melakukan Sholat Jum'at di masjid dekat rumah kalian, Kalian juga dapat melakukan Sholat Jum'at ini di dekat sekolah kalian jikalau kalian ingin membawa Sajadah, Al-Qur'an/Juz Amma, dan Kalian harus selalu Sholat Jum'at sebelum berangkat ke Sekolah.",
+                    "",
+                    "*Keputrian:*",
+                    "",
+                    "•Kalian harus melakukan Kegiatan Keputrian terutama bagi yang Wanita, Kalian tidak boleh lupa untuk membawa Sajadah, Al-Qur'an/Juz Amma, Kalian harus datang di jam 11:00 WIB - 11:20 WIB untuk mengikuti seluruh Kegiatan Keputrian, dan Kegiatan ini sudah diterapkan oleh sekolah."
+                ]
+            },
+            "Sabtu": {
+                "pelajaran": [
+                    "•PJBL - 09:00 WIB - 12:00 WIB (3 Jam)",
+                    "•Ekstrakurikuler - 13:00 WIB - 15:00 WIB (3 Jam)"
+                ],
+                "seragam": [
+                    "•Baju Pramuka",
+                    "•Atribut Lengkap Baju Pramuka"
+                ],
+                "piket": [
+                    "•Naia", "•Faiq", "•Rehan", "•Kenzie"
+                ],
+                "jam_masuk": "09:00 WIB - 09:30 WIB",
+                "jam_pulang": "11:30 WIB - 12:00 WIB"
+            }
+        };
+
+        const hariIndonesia = {
+            0: "Senin",
+            1: "Selasa",
+            2: "Rabu",
+            3: "Kamis",
+            4: "Jumat",
+            5: "Sabtu",
+            6: "Minggu"
+        };
+
+        // Login System
+        function initializeLoginSystem() {
+            // Set default username and password if not exists
+            if (!localStorage.getItem('scheduleXZUsername')) {
+                localStorage.setItem('scheduleXZUsername', 'Sekretaris');
+            }
+            if (!localStorage.getItem('scheduleXZPassword')) {
+                localStorage.setItem('scheduleXZPassword', 'Sekretaris7D');
+            }
+
+            // Check if user is already logged in
+            if (localStorage.getItem('scheduleXZLoggedIn') === 'true') {
+                showMainApp();
+            }
+
+            // Login button event
+            document.getElementById('login-btn').addEventListener('click', handleLogin);
+            
+            // Enter key for login
+            document.getElementById('password').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    handleLogin();
+                }
+            });
+
+            // Logout button event
+            document.getElementById('logout-btn').addEventListener('click', handleLogout);
+
+            // Update login credentials
+            document.getElementById('update-login').addEventListener('click', updateLoginCredentials);
+        }
+
+        function handleLogin() {
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const storedUsername = localStorage.getItem('scheduleXZUsername');
+            const storedPassword = localStorage.getItem('scheduleXZPassword');
+            const errorElement = document.getElementById('login-error');
+
+            if (username === storedUsername && password === storedPassword) {
+                localStorage.setItem('scheduleXZLoggedIn', 'true');
+                showMainApp();
+            } else {
+                errorElement.style.display = 'block';
+                setTimeout(() => {
+                    errorElement.style.display = 'none';
+                }, 3000);
+            }
+        }
+
+        function handleLogout() {
+            localStorage.setItem('scheduleXZLoggedIn', 'false');
+            showLoginForm();
+        }
+
+        function showMainApp() {
+            document.getElementById('login-container').style.display = 'none';
+            document.getElementById('main-app').style.display = 'block';
+        }
+
+        function showLoginForm() {
+            document.getElementById('login-container').style.display = 'flex';
+            document.getElementById('main-app').style.display = 'none';
+            document.getElementById('username').value = '';
+            document.getElementById('password').value = '';
+        }
+
+        // Tab Navigation
+        document.querySelectorAll('.tab-btn').forEach(button => {
+            button.addEventListener('click', () => {
+                // Remove active class from all buttons and contents
+                document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+                document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+                
+                // Add active class to clicked button and corresponding content
+                button.classList.add('active');
+                document.getElementById(button.dataset.tab).classList.add('active');
+                
+                // Update schedule list if needed
+                if (button.dataset.tab === 'schedule-list') {
+                    loadSavedSchedules();
+                }
+                
+                // Update counts if needed
+                if (button.dataset.tab === 'settings') {
+                    updateCounts();
+                }
+            });
+        });
+
+        // Day Selection
+        document.querySelectorAll('.day-option').forEach(option => {
+            option.addEventListener('click', () => {
+                document.querySelectorAll('.day-option').forEach(opt => opt.classList.remove('active'));
+                option.classList.add('active');
+            });
+        });
+
+        // Add PR Input
+        document.getElementById('add-pr').addEventListener('click', () => {
+            const prInputs = document.getElementById('pr-inputs');
+            const newPrInput = document.createElement('div');
+            newPrInput.className = 'pr-input';
+            newPrInput.innerHTML = `
+                <input type="text" placeholder="Nama Pelajaran Pekerjaan Rumah" class="pr-pelajaran">
+                <input type="text" placeholder="Tugas" class="pr-tugas">
+                <input type="text" placeholder="DeadLine (DD/MM/YYYY)" class="pr-deadline">
+                <input type="text" placeholder="Catatan" class="pr-catatan">
+                <button class="btn btn-danger remove-pr">Hapus</button>
+            `;
+            prInputs.appendChild(newPrInput);
+            
+            // Add event listener to remove button
+            newPrInput.querySelector('.remove-pr').addEventListener('click', () => {
+                prInputs.removeChild(newPrInput);
+            });
+        });
+
+        // Add Announcement Input
+        document.getElementById('add-announcement').addEventListener('click', () => {
+            const announcementInputs = document.getElementById('announcement-inputs');
+            const newAnnouncementInput = document.createElement('div');
+            newAnnouncementInput.className = 'announcement-input';
+            newAnnouncementInput.innerHTML = `
+                <input type="text" placeholder="Pengumuman" class="announcement-text">
+                <input type="text" placeholder="Catatan" class="announcement-catatan">
+                <input type="text" placeholder="Tanggal (DD/MM/YY)" class="announcement-tanggal">
+                <button class="btn btn-danger remove-announcement">Hapus</button>
+            `;
+            announcementInputs.appendChild(newAnnouncementInput);
+            
+            // Add event listener to remove button
+            newAnnouncementInput.querySelector('.remove-announcement').addEventListener('click', () => {
+                announcementInputs.removeChild(newAnnouncementInput);
+            });
+        });
+
+        // Add Warning Input
+        document.getElementById('add-warning').addEventListener('click', () => {
+            const warningInputs = document.getElementById('warning-inputs');
+            const newWarningInput = document.createElement('div');
+            newWarningInput.className = 'warning-input';
+            newWarningInput.innerHTML = `
+                <input type="text" placeholder="Tingkat Peringatan" class="warning-tingkat">
+                <input type="text" placeholder="Nama Penerima Peringatan" class="warning-penerima">
+                <input type="text" placeholder="Catatan Peringatan" class="warning-catatan">
+                <input type="text" placeholder="Hukuman yang didapatkan" class="warning-hukuman">
+                <button class="btn btn-danger remove-warning">Hapus</button>
+            `;
+            warningInputs.appendChild(newWarningInput);
+            
+            // Add event listener to remove button
+            newWarningInput.querySelector('.remove-warning').addEventListener('click', () => {
+                warningInputs.removeChild(newWarningInput);
+            });
+        });
+
+        // Format PR Text
+        function formatPrText(prList) {
+            if (!prList || prList.length === 0) {
+                return "-\n";
+            }
+            
+            let text = "";
+            prList.forEach(pr => {
+                text += `•${pr.pelajaran}📚:\n`;
+                text += `  Tugas📘 : ${pr.tugas}\n`;
+                text += `  DeadLine⏰:   ${pr.deadline}\n`;
+                text += `  Catatan📒 : ${pr.catatan}\n\n`;
+            });
+            
+            return text;
+        }
+
+        // Format Announcement Text
+        function formatAnnouncementText(announcementList) {
+            if (!announcementList || announcementList.length === 0) {
+                return "-\n";
+            }
+            
+            let text = "";
+            announcementList.forEach(announcement => {
+                text += `•${announcement.pengumuman}📢 :\n`;
+                text += `  Catatan📒 : ${announcement.catatan}\n`;
+                text += `  Tanggal🗓 : ${announcement.tanggal}\n\n`;
+            });
+            
+            return text;
+        }
+
+        // Format Warning Text
+        function formatWarningText(warningList) {
+            if (!warningList || warningList.length === 0) {
+                return "-\n";
+            }
+            
+            let text = "";
+            warningList.forEach(warning => {
+                text += `•${warning.tingkat}⚠️ :\n`;
+                text += `  Penerima👤 : ${warning.penerima}\n`;
+                text += `  Catatan📒 : ${warning.catatan}\n`;
+                text += `  Hukuman⚖️ : ${warning.hukuman}\n\n`;
+            });
+            
+            return text;
+        }
+
+        // Generate Schedule Text
+        function generateScheduleText(day, prList, announcementList, warningList) {
+            const scheduleInfo = scheduleData[day];
+            const waktuPembuatan = new Date().toLocaleString('id-ID', {
+                day: '2-digit',
+                month: '2-digit',
+                year: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit'
+            });
+            
+            // Determine entry and exit times based on day
+            let jamMasuk, jamPulang;
+            if (day === "Sabtu") {
+                jamMasuk = "09:00 WIB - 09:30 WIB";
+                jamPulang = "11:30 WIB - 12:00 WIB";
+            } else {
+                jamMasuk = "12:30 WIB - 13:00 WIB";
+                jamPulang = "16:30 WIB - 17:00 WIB";
+            }
+
+            let text = `Assalamu'alaikum 
+teman-temanku, saya hanya ingin memberikan informasi berikut:
+
+*Jadwal  Sekolah🏫:*
+
+*${day}:*
+
+*Jadwal Masuk Sekolah⏰:*
+${jamMasuk}
+
+*Jadwal Pulang Sekolah⏰:*
+${jamPulang}
+
+*Jadwal Pelajaran 📚:*
+
+*${day}:*
+
+`;
+
+            // Add class schedule
+            scheduleInfo.pelajaran.forEach(pelajaran => {
+                text += pelajaran + "\n";
+            });
+
+            text += `
+*Jadwal Seragam🧥:*
+
+*${day}:*
+
+`;
+
+            // Add uniform schedule
+            scheduleInfo.seragam.forEach(seragam => {
+                text += seragam + "\n";
+            });
+
+            text += `
+*Jadwal Piket🧹:*
+
+*${day}:*
+
+`;
+
+            // Add cleaning schedule
+            scheduleInfo.piket.forEach(piket => {
+                text += piket + "\n";
+            });
+
+            text += `
+*Pekerjaan Rumah (PR):*
+
+${formatPrText(prList)}
+*Noted 📓:*
+
+*•Piket Kelas🧹:*
+
+•Piket Kelas mohon dikerjakan sesuai jadwal Piket Kelas, kalian apabila tidak melakukan Piket Kelas pada saat jadwal Piket Kelas, kalian maka akan dikenakan denda sebesar *Rp 5.000*, uang denda yang dibayarkan akan masuk ke kas kelas 7D
+
+*•Pekerjaan Rumah(PR) 📚:*
+
+•kalian harus mengerjakan Pekerjaan Rumah(PR), secepat mungkin, karena Pekerjaan Rumah(PR) sudah ada waktu DeadLine, kalian apa bila terkena DeadLine pada Pekerjaan Rumah(PR), kalian maka akan mendapatkan Sanksi berupa sebuah hukuman yang diberikan oleh guru, yang diberikan kepada siswa-siswi yang tidak mengerjakan Pekerjaan Rumah (PR). 
+
+*Announcement 📢:*
+
+${formatAnnouncementText(announcementList)}
+*Warning ⚠️:*
+
+${formatWarningText(warningList)}`;
+
+            // Add special section for Friday
+            if (day === "Jumat" && scheduleInfo.khusus) {
+                text += "\n";
+                scheduleInfo.khusus.forEach(line => {
+                    text += line + "\n";
+                });
+                text += "\n";
+            }
+
+            text += `
+*Waktu Pembuatan Jadwal : ${waktuPembuatan}*
+
+*Butuh Bantuan? Hubungi :* 
+
+*•Andika (+62 878-6370-8065)*
+                         
+*•Aqhilla (+62 851-7204-7205)*
+                         
+*•Almira (+62 895-3852-92121)*
+
+Baik, TerimaKasih Teman-Teman, saya izin pamit undur diri. 
+
+Assalamu'alaikum`;
+
+            return text;
+        }
+
+        // Generate Schedule
+        document.getElementById('generate-schedule').addEventListener('click', () => {
+            const selectedDay = document.querySelector('.day-option.active').dataset.day;
+            
+            // Collect PR data
+            const prList = [];
+            document.querySelectorAll('.pr-input').forEach(input => {
+                const pelajaran = input.querySelector('.pr-pelajaran').value;
+                const tugas = input.querySelector('.pr-tugas').value;
+                const deadline = input.querySelector('.pr-deadline').value;
+                const catatan = input.querySelector('.pr-catatan').value;
+                
+                if (pelajaran) {
+                    prList.push({
+                        pelajaran,
+                        tugas,
+                        deadline,
+                        catatan
+                    });
+                }
+            });
+            
+            // Collect Announcement data
+            const announcementList = [];
+            document.querySelectorAll('.announcement-input').forEach(input => {
+                const pengumuman = input.querySelector('.announcement-text').value;
+                const catatan = input.querySelector('.announcement-catatan').value;
+                const tanggal = input.querySelector('.announcement-tanggal').value;
+                
+                if (pengumuman) {
+                    announcementList.push({
+                        pengumuman,
+                        catatan,
+                        tanggal
+                    });
+                }
+            });
+            
+            // Collect Warning data
+            const warningList = [];
+            document.querySelectorAll('.warning-input').forEach(input => {
+                const tingkat = input.querySelector('.warning-tingkat').value;
+                const penerima = input.querySelector('.warning-penerima').value;
+                const catatan = input.querySelector('.warning-catatan').value;
+                const hukuman = input.querySelector('.warning-hukuman').value;
+                
+                if (tingkat) {
+                    warningList.push({
+                        tingkat,
+                        penerima,
+                        catatan,
+                        hukuman
+                    });
+                }
+            });
+            
+            // Generate schedule text
+            const scheduleText = generateScheduleText(selectedDay, prList, announcementList, warningList);
+            document.getElementById('schedule-preview').textContent = scheduleText;
+        });
+
+        // Copy to Clipboard
+        document.getElementById('copy-schedule').addEventListener('click', () => {
+            const scheduleText = document.getElementById('schedule-preview').textContent;
+            
+            navigator.clipboard.writeText(scheduleText).then(() => {
+                alert('Jadwal berhasil disalin ke clipboard!');
+            }).catch(err => {
+                console.error('Failed to copy: ', err);
+                alert('Gagal menyalin ke clipboard. Silakan salin manual.');
+            });
+        });
+
+        // Save Schedule
+        document.getElementById('save-schedule').addEventListener('click', () => {
+            const scheduleText = document.getElementById('schedule-preview').textContent;
+            const selectedDay = document.querySelector('.day-option.active').dataset.day;
+            
+            if (!scheduleText || scheduleText === "Schedule preview akan muncul di sini...") {
+                alert('Silakan generate jadwal terlebih dahulu!');
+                return;
+            }
+            
+            // Get saved schedules from localStorage
+            const savedSchedules = JSON.parse(localStorage.getItem('savedSchedules') || '[]');
+            
+            // Add new schedule
+            const timestamp = new Date().toISOString();
+            const newSchedule = {
+                id: timestamp,
+                day: selectedDay,
+                text: scheduleText,
+                createdAt: new Date().toLocaleString('id-ID')
+            };
+            
+            savedSchedules.push(newSchedule);
+            localStorage.setItem('savedSchedules', JSON.stringify(savedSchedules));
+            
+            alert('Jadwal berhasil disimpan!');
+            loadSavedSchedules();
+        });
+
+        // Load Saved Schedules
+        function loadSavedSchedules() {
+            const savedSchedulesContainer = document.getElementById('saved-schedules');
+            const savedSchedules = JSON.parse(localStorage.getItem('savedSchedules') || '[]');
+            
+            savedSchedulesContainer.innerHTML = '';
+            
+            if (savedSchedules.length === 0) {
+                savedSchedulesContainer.innerHTML = '<p>Tidak ada jadwal yang tersedia.</p>';
+                return;
+            }
+            
+            savedSchedules.forEach(schedule => {
+                const scheduleCard = document.createElement('div');
+                scheduleCard.className = 'schedule-card';
+                scheduleCard.innerHTML = `
+                    <h3>Jadwal ${schedule.day}</h3>
+                    <p>Dibuat: ${schedule.createdAt}</p>
+                    <div class="schedule-actions">
+                        <button class="btn view-schedule" data-id="${schedule.id}">Lihat</button>
+                        <button class="btn btn-danger delete-schedule" data-id="${schedule.id}">Hapus</button>
+                    </div>
+                `;
+                
+                savedSchedulesContainer.appendChild(scheduleCard);
+            });
+            
+            // Add event listeners to view buttons
+            document.querySelectorAll('.view-schedule').forEach(button => {
+                button.addEventListener('click', () => {
+                    const scheduleId = button.dataset.id;
+                    const schedule = savedSchedules.find(s => s.id === scheduleId);
+                    
+                    if (schedule) {
+                        document.getElementById('schedule-preview').textContent = schedule.text;
+                        // Switch to create schedule tab
+                        document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+                        document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+                        
+                        document.querySelector('[data-tab="create-schedule"]').classList.add('active');
+                        document.getElementById('create-schedule').classList.add('active');
+                    }
+                });
+            });
+            
+            // Add event listeners to delete buttons
+            document.querySelectorAll('.delete-schedule').forEach(button => {
+                button.addEventListener('click', () => {
+                    const scheduleId = button.dataset.id;
+                    if (confirm('Apakah Anda yakin ingin menghapus jadwal ini?')) {
+                        const savedSchedules = JSON.parse(localStorage.getItem('savedSchedules') || '[]');
+                        const updatedSchedules = savedSchedules.filter(s => s.id !== scheduleId);
+                        localStorage.setItem('savedSchedules', JSON.stringify(updatedSchedules));
+                        loadSavedSchedules();
+                    }
+                });
+            });
+        }
+
+        // Update Counts
+        function updateCounts() {
+            const savedSchedules = JSON.parse(localStorage.getItem('savedSchedules') || '[]');
+            document.getElementById('schedule-count').textContent = savedSchedules.length;
+            document.getElementById('template-count').textContent = 6; // Fixed template count
+        }
+
+        // Delete All Data
+        document.getElementById('delete-all').addEventListener('click', () => {
+            if (confirm('Apakah Anda yakin ingin menghapus SEMUA data?')) {
+                localStorage.removeItem('savedSchedules');
+                alert('Semua data berhasil dihapus!');
+                loadSavedSchedules();
+                updateCounts();
+            }
+        });
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            initializeLoginSystem();
+            loadSavedSchedules();
+            updateCounts();
+            
+            // Set today's next day as default
+            const today = new Date();
+            const nextDay = new Date(today);
+            nextDay.setDate(today.getDate() + 1);
+            const nextDayIndex = nextDay.getDay();
+            const nextDayName = hariIndonesia[nextDayIndex];
+            
+            // Set the active day option
+            document.querySelectorAll('.day-option').forEach(option => {
+                if (option.dataset.day === nextDayName) {
+                    option.classList.add('active');
+                } else {
+                    option.classList.remove('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
