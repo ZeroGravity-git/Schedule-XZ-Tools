@@ -855,10 +855,10 @@
             
             let text = "";
             prList.forEach(pr => {
-                text += `•${pr.pelajaran}📚:\n`;
-                text += `  Tugas📘 : ${pr.tugas}\n`;
-                text += `  DeadLine⏰:   ${pr.deadline}\n`;
-                text += `  Catatan📒 : ${pr.catatan}\n\n`;
+                text += `*•${pr.pelajaran}📚:*\n`;
+                text += `  *Tugas📘 : ${pr.tugas}*\n`;
+                text += `  *DeadLine⏰:   ${pr.deadline}*\n`;
+                text += `  *Catatan📒 : ${pr.catatan}*\n\n`;
             });
             
             return text;
@@ -872,9 +872,9 @@
             
             let text = "";
             announcementList.forEach(announcement => {
-                text += `•${announcement.pengumuman}📢 :\n`;
-                text += `  Catatan📒 : ${announcement.catatan}\n`;
-                text += `  Tanggal🗓 : ${announcement.tanggal}\n\n`;
+                text += `*•${announcement.pengumuman}📢 :*\n`;
+                text += `  *Catatan📒 : ${announcement.catatan}*\n`;
+                text += `  *Tanggal🗓 : ${announcement.tanggal}*\n\n`;
             });
             
             return text;
@@ -888,10 +888,10 @@
             
             let text = "";
             warningList.forEach(warning => {
-                text += `•${warning.tingkat}⚠️ :\n`;
-                text += `  Penerima👤 : ${warning.penerima}\n`;
-                text += `  Catatan📒 : ${warning.catatan}\n`;
-                text += `  Hukuman⚖️ : ${warning.hukuman}\n\n`;
+                text += `*•${warning.tingkat}⚠️ :*\n`;
+                text += `  *Penerima👤 : ${warning.penerima}*\n`;
+                text += `  *Catatan📒 : ${warning.catatan}*\n`;
+                text += `  *Hukuman⚖️ : ${warning.hukuman}*\n\n`;
             });
             
             return text;
